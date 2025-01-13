@@ -1,0 +1,12 @@
+[dependencies]
+base = "0.10.0"
+array = "master"
+hash = "master"
+encoding = "master"
+principal = "master"
+
+[package]
+name = "orb"
+version = "0.1.0"
+description = "Living NFT (LNFT) Project"
+repository = ""

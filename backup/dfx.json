@@ -1,0 +1,37 @@
+{
+  "canisters": {
+    "lnft_core": {
+      "main": "src/backend/lnft_core/main.mo",
+      "type": "motoko"
+    },
+    "memory_system": {
+      "main": "src/backend/memory_system/main.mo",
+      "type": "motoko"
+    },
+    "cronolink": {
+      "main": "src/backend/cronolink/main.mo",
+      "type": "motoko"
+    },
+    "frontend": {
+      "dependencies": ["lnft_core", "memory_system", "cronolink"],
+      "frontend": {
+        "entrypoint": "src/frontend/src/index.html"
+      },
+      "source": ["src/frontend/assets", "dist/frontend/"],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}

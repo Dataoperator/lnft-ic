@@ -1,0 +1,66 @@
+{
+  "canisters": {
+    "lnft_core": {
+      "main": "src/lnft_core/main.mo",
+      "type": "motoko",
+      "optimize": "cycles",
+      "build": [
+        "npx ic-mops i",
+        "npx ic-mops build"
+      ]
+    },
+    "memory_system": {
+      "main": "src/memory_system/main.mo",
+      "type": "motoko",
+      "optimize": "cycles"
+    },
+    "cronolink": {
+      "main": "src/cronolink/main.mo",
+      "type": "motoko",
+      "optimize": "cycles"
+    },
+    "internet_identity": {
+      "type": "custom",
+      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz",
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      }
+    },
+    "frontend": {
+      "dependencies": [
+        "lnft_core",
+        "memory_system",
+        "cronolink"
+      ],
+      "frontend": {
+        "entrypoint": "src/frontend/src/index.html"
+      },
+      "source": [
+        "src/frontend/assets",
+        "dist/frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": "mops sources"
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    },
+    "ic": {
+      "providers": ["https://mainnet.dfinity.network"],
+      "type": "persistent"
+    }
+  },
+  "version": 1,
+  "dfx": "0.15.1"
+}
