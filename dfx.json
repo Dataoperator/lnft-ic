@@ -1,59 +1,45 @@
 {
   "canisters": {
     "lnft_core": {
+      "type": "motoko",
       "main": "src/lnft_core/main.mo",
-      "type": "motoko",
       "optimize": "cycles",
-      "build": [
-        "npx ic-mops i",
-        "npx ic-mops build"
-      ]
+      "gzip": true
     },
-    "memory_system": {
-      "main": "src/memory_system/main.mo",
+    "auth": {
       "type": "motoko",
-      "optimize": "cycles"
+      "main": "src/auth/main.mo",
+      "optimize": "cycles",
+      "gzip": true
     },
     "cronolink": {
-      "main": "src/cronolink/main.mo",
       "type": "motoko",
-      "optimize": "cycles"
-    },
-    "internet_identity": {
-      "type": "custom",
-      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz",
-      "remote": {
-        "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
-        }
-      }
+      "main": "src/cronolink/main.mo",
+      "optimize": "cycles",
+      "gzip": true
     },
     "frontend": {
-      "dependencies": [
-        "lnft_core",
-        "memory_system",
-        "cronolink"
-      ],
-      "frontend": {
-        "entrypoint": "src/frontend/src/index.html"
-      },
-      "source": [
-        "src/frontend/assets",
-        "dist/frontend/"
-      ],
-      "type": "assets"
+      "type": "assets",
+      "source": ["src/frontend/dist"],
+      "build": ["cd src/frontend && npm run build"],
+      "dependencies": ["lnft_core", "auth", "cronolink"],
+      "optimize": "cycles",
+      "gzip": true
     }
   },
   "defaults": {
     "build": {
       "args": "",
-      "packtool": "mops sources"
+      "packtool": "vessel sources",
+      "optimizer": {
+        "level": "3",
+        "warm_up_iterations": 1000
+      }
     }
   },
   "networks": {
     "local": {
-      "bind": "127.0.0.1:8000",
+      "bind": "127.0.0.1:8001",
       "type": "ephemeral"
     },
     "ic": {
@@ -61,6 +47,5 @@
       "type": "persistent"
     }
   },
-  "version": 1,
-  "dfx": "0.15.1"
+  "version": 2
 }

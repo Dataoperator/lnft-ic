@@ -1,0 +1,4 @@
+type Auth = 
+ service {
+ };
+service : () -> Auth

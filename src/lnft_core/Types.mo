@@ -5,15 +5,15 @@ import Nat "mo:base/Nat";
 import Hash "mo:base/Hash";
 import Blob "mo:base/Blob";
 import Array "mo:base/Array";
+import Nat32 "mo:base/Nat32";
 
 module {
     public type TokenId = Nat;
 
-    // Use a more efficient metadata structure
+    // Metadata structure
     public type Metadata = {
         name : Text;
         description : Text;
-        // Store image data as Blob for efficiency
         image : ?Blob;
         created_at : Time.Time;
         modified_at : Time.Time;
@@ -35,22 +35,19 @@ module {
         id : Text;
         name : Text;
         rarity : TraitRarity;
-        // Optional supply limit for rarity
         supply : ?{
             current : Nat;
             max : Nat;
         };
     };
 
-    // Using compact emotional state representation
     public type EmotionalState = {
         base : Text;
-        intensity : Nat8;  // 0-100 scale uses less memory than Nat
+        intensity : Nat8;  // 0-100 scale
         modifiers : [Text];
         timestamp : Time.Time;
     };
 
-    // Optimized memory entry structure
     public type MemoryEntry = {
         timestamp : Time.Time;
         content : Text;
@@ -58,26 +55,21 @@ module {
             base : Text;
             intensity : Nat8;
         };
-        // Use Array instead of Buffer for stable storage
         tags : [Text];
-        // Using Blob for any additional data
         metadata : ?Blob;
     };
 
-    // Main LNFT type with stable storage considerations
     public type LNFT = {
         id : TokenId;
         owner : Principal;
         metadata : Metadata;
         traits : [Trait];
         emotional_state : EmotionalState;
-        // Store memory references instead of full entries
         memory_ids : [Nat];
         created : Time.Time;
         last_interaction : Time.Time;
     };
 
-    // Event system for logging
     public type EventType = {
         #Mint : {
             to : Principal;
@@ -103,12 +95,10 @@ module {
         };
     };
 
-    // Stable storage helper types
     public type StableMemoryEntry = (Nat, MemoryEntry);
     public type StableEmotionalState = (TokenId, EmotionalState);
     public type StableLNFT = (TokenId, LNFT);
 
-    // Helper functions for stable storage
     public func arrayToBuffer<T>(arr: [T]): Buffer.Buffer<T> {
         let buf = Buffer.Buffer<T>(arr.size());
         for (item in arr.vals()) {
@@ -121,12 +111,19 @@ module {
         Buffer.toArray(buf)
     };
 
-    // Efficient hash function for TokenId
-    public func tokenIdHash(id: TokenId): Hash.Hash {
-        Hash.hash(Nat.toText(id))
+    public func tokenIdEqual(x: TokenId, y: TokenId): Bool {
+        x == y
     };
 
-    // Memory optimization helper
+    // Improved hash function for TokenId using Nat32 hash
+    public func tokenIdHash(id: TokenId): Hash.Hash {
+        let n32 = Nat32.fromNat(id);
+        // Use FNV-1a hash
+        var hash: Nat32 = 2_166_136_261; // FNV offset basis
+        hash := (hash ^ n32) *% 16_777_619; // FNV prime
+        hash
+    };
+
     public func compressMemoryEntry(entry: MemoryEntry): MemoryEntry {
         {
             timestamp = entry.timestamp;
@@ -135,5 +132,10 @@ module {
             tags = Array.filter<Text>(entry.tags, func(t: Text): Bool = t != "");
             metadata = entry.metadata;
         }
+    };
+
+    // Add equality function for TokenId (required by ICRC-7)
+    public func equal(x: TokenId, y: TokenId): Bool {
+        x == y
     };
 }
