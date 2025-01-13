@@ -1,4 +1,18 @@
+# Internet Computer & Node
 .dfx/
 node_modules/
 .vessel/
 dist/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+
+# Build
+build/
+out/
+
