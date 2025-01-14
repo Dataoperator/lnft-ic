@@ -1,0 +1,146 @@
+type TransferError = 
+ variant {
+   InvalidRequest;
+   InvalidTokenId;
+   Unauthorized;
+ };
+type TransferArgs = 
+ record {
+   memo: opt Memo;
+   to: Account__1;
+   token_id: TokenId__1;
+ };
+type Trait = 
+ record {
+   name: text;
+   rarity: nat;
+   value: nat;
+ };
+type TokenId__1 = nat;
+type TokenId = nat;
+type Timestamp = int;
+type Time = int;
+type Result_3 = 
+ variant {
+   err: text;
+   ok;
+ };
+type Result_2 = 
+ variant {
+   err: ApprovalError;
+   ok;
+ };
+type Result_1 = 
+ variant {
+   err: TransferError;
+   ok;
+ };
+type Result = 
+ variant {
+   err: Error;
+   ok: TokenId;
+ };
+type MintArgs = 
+ record {
+   metadata: opt MetadataContainer;
+   to: Account__1;
+ };
+type MetadataValue = 
+ variant {
+   Array: vec MetadataValue;
+   Blob: blob;
+   Int: int;
+   Nat: nat;
+   Text: text;
+ };
+type MetadataContainer__1 = 
+ variant {
+   Blob: blob;
+   Metadata: vec record {
+                   text;
+                   MetadataValue;
+                 };
+ };
+type MetadataContainer = 
+ variant {
+   Blob: blob;
+   Metadata: vec record {
+                   text;
+                   MetadataValue;
+                 };
+ };
+type Memory = 
+ record {
+   content: text;
+   emotionalImpact: EmotionalState__1;
+   timestamp: Time;
+ };
+type Memo = blob;
+type LNFT = 
+ service {
+   addMemory: (TokenId, text, EmotionalState) -> (Result_3);
+   getEmotionalState: (TokenId) -> (opt EmotionalState) query;
+   getMemories: (TokenId) -> (vec Memory) query;
+   getTraits: (TokenId) -> (opt vec Trait) query;
+   icrc7_approve: (ApprovalArgs) -> (Result_2);
+   icrc7_description: () -> (text) query;
+   icrc7_metadata: () -> (MetadataContainer__1) query;
+   icrc7_mint: (MintArgs) -> (Result);
+   icrc7_name: () -> (text) query;
+   icrc7_royalties: () -> (nat) query;
+   icrc7_royalty_recipient: () -> (principal) query;
+   icrc7_supply_cap: () -> (opt nat) query;
+   icrc7_supported_standards: () -> (vec text) query;
+   icrc7_symbol: () -> (text) query;
+   icrc7_total_supply: () -> (nat) query;
+   icrc7_transfer: (TransferArgs) -> (Result_1);
+   mint: (Account, vec Trait, EmotionalState) -> (Result);
+ };
+type Error = 
+ variant {
+   AlreadyExistTokenId;
+   GenericError;
+   InvalidRequest;
+   InvalidTokenId;
+   Unauthorized;
+ };
+type EmotionalState__1 = 
+ record {
+   anger: nat;
+   fear: nat;
+   joy: nat;
+   sadness: nat;
+   trust: nat;
+ };
+type EmotionalState = 
+ record {
+   anger: nat;
+   fear: nat;
+   joy: nat;
+   sadness: nat;
+   trust: nat;
+ };
+type ApprovalError = 
+ variant {
+   InvalidRequest;
+   InvalidTokenId;
+   Unauthorized;
+ };
+type ApprovalArgs = 
+ record {
+   expires_at: opt Timestamp;
+   from_subaccount: opt vec nat8;
+   spender: principal;
+   token_id: TokenId__1;
+ };
+type Account__1 = 
+ record {
+   owner: principal;
+   subaccount: opt vec nat8;
+ };
+type Account = 
+ record {
+   owner: principal;
+   subaccount: opt vec nat8;
+ };
+service : () -> LNFT

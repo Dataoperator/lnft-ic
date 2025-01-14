@@ -1,160 +1,172 @@
-# LNFT (Living NFT) Project
+# LNFT (Living NFT) Platform
 
-A next-generation NFT platform on the Internet Computer that creates "living" NFTs with emotions, memories, and the ability to interact with external services. Each NFT is a unique digital entity capable of evolving through interactions, storing memories, and expressing emotions.
+## Vision
+LNFT is a next-generation NFT platform that creates truly autonomous digital entities on the Internet Computer. Each LNFT is more than just a token - it's a living, evolving digital being with:
 
-## 🌟 Core Features
+- 🧠 Advanced Neural Processing
+- 💭 Genuine Emotional States
+- 🔄 Evolving Memory Systems
+- 🌱 Dynamic Trait Evolution
+- 🤝 Social Interaction Capabilities
+- 🎨 Multimodal Expression
+- 🔍 Self-Discovery Mechanisms
+- 📚 Expandable Skill Library
 
-- **ICRC-7 Compliance**: Full implementation of the Internet Computer NFT standard
-- **Dynamic Traits**: Evolving trait system with rarity mechanics
-- **Emotional State**: NFTs maintain and evolve emotional states based on interactions
-- **Memory System**: Persistent on-chain memory storage for interactions and experiences
-- **External Integration**: Seamless integration with LLM, Voice, and YouTube services
-- **Internet Identity**: Secure authentication using Internet Computer's Identity system
+## Core Features
 
-## 🛠 Technology Stack
+### 1. Advanced Neural Architecture
+- 8-dimensional emotional state modeling
+- Associative memory networks
+- Dynamic trait evolution
+- Social graph implementation
+- Emergent behavior patterns
 
-### Backend
-- Motoko (Internet Computer's native language)
-- ICRC-7 NFT Standard
-- Internet Computer HTTP outcalls
-- Stable storage patterns
+### 2. Self-Discovery System
+- Automatic curriculum generation
+- Achievement-based growth
+- Seasonal special events
+- Rarity-based trait evolution
 
-### Frontend
-- React 18
-- TypeScript
-- Vite
-- TailwindCSS
-- Internet Computer JS Agent
+### 3. Skill Library
+- Code-as-actions capability
+- Composable skill system
+- Transferrable skill traits
+- Progressive skill unlocks
 
-## 🔧 System Architecture
+### 4. Memory & Emotional System
+- Persistent memory timeline
+- Emotional state evolution
+- Experience-based learning
+- Interaction history tracking
 
+### 5. Social Features
+- Inter-LNFT communication
+- Skill sharing capabilities
+- Collaborative achievements
+- Guild/faction system
+
+### 6. Multimodal Integration
+- LLM reasoning capabilities
+- Voice/audio generation
+- Image creation/processing
+- External data integration
+
+## Technical Architecture
+
+### Core Components
+```mermaid
+graph TB
+    subgraph Neural_Mesh ["Neural Mesh Architecture"]
+        CORE((Neural Core))
+        EMOT[Emotional<br/>Processing]
+        MEM[Memory<br/>Network]
+        TRAIT[Trait<br/>Evolution]
+        SOC[Social<br/>Graph]
+        AI[AI<br/>Integration]
+        
+        CORE <--> EMOT
+        CORE <--> MEM
+        CORE <--> TRAIT
+        CORE <--> SOC
+        CORE <--> AI
+        
+        EMOT <--> MEM
+        TRAIT <--> MEM
+        SOC <--> MEM
+        AI <--> MEM
+        
+        EMOT <--> TRAIT
+        EMOT <--> SOC
+        TRAIT <--> SOC
+        AI <--> TRAIT
+    end
 ```
-Backend:
-├─ LNFT Core (ICRC-7)
-│  ├─ Token management
-│  └─ Memory system
-├─ Authentication
-│  └─ Internet Identity
-├─ Cronolink
-│  ├─ Chat system
-│  └─ API integration
-└─ Types
-   └─ Shared declarations
 
-Frontend:
-├─ src/
-│  ├─ features/
-│  │  ├─ auth/
-│  │  ├─ minting/
-│  │  └─ cronolink/
-│  ├─ components/
-│  └─ declarations/
-```
+## Getting Started
 
-## 📋 Prerequisites
-
-- dfx (Internet Computer SDK) >= 0.14.1
+### Prerequisites
+- dfx >= 0.14.1
 - Node.js >= 16.0.0
-- npm >= 8.0.0
-- Vessel package manager (for Motoko dependencies)
+- TypeScript >= 5.7.3
+- Vessel (for Motoko dependencies)
 
-## 🚀 Quick Start
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Dataoperator/lnft-ic.git
-   cd lnft-ic
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   dfx start --clean --background
-   ```
-
-3. Deploy locally:
-   ```bash
-   dfx deploy
-   ```
-
-## 💻 Development
-
-### Local Development
+### Installation
 ```bash
-# Start the local replica
+# Clone repository
+git clone [repository-url]
+cd orb
+
+# Install dependencies
+npm install
+vessel install
+
+# Start local Internet Computer replica
 dfx start --clean --background
-
-# Deploy all canisters
-dfx deploy
-
-# Start frontend development server
-npm run dev
-```
-
-### Canister Management
-```bash
-# Build canisters
-dfx build
 
 # Deploy canisters
 dfx deploy
-
-# Stop local replica
-dfx stop
 ```
 
-## 🔐 Security Features
+## Development Guide
 
-- Secure authentication with Internet Identity
-- Rate limiting for API calls
-- Proper session management
-- Cross-canister call security
+### Project Structure
+```
+/orb
+├── src/
+│   ├── hub/              # Core LNFT System
+│   │   ├── neural/       # Neural Processing
+│   │   ├── security/     # Security Systems
+│   │   └── main.mo
+│   ├── spokes/           # Subsystems
+│   │   ├── memory/       # Memory System
+│   │   ├── traits/       # Trait System
+│   │   └── social/       # Social System
+│   └── frontend/         # User Interface
+├── test/                 # Test Suite
+└── docs/                 # Documentation
+```
 
-## 🌐 External Integrations
+### Key Components
 
-- LLM Integration for advanced reasoning
-- Voice synthesis capabilities
-- YouTube embed support
-- Image generation support (planned)
+1. Neural Core (Hub)
+   - Emotional state processing
+   - Memory network management
+   - Trait evolution control
+   - Social graph coordination
 
-## 📦 Current Status
+2. Memory System (Spoke)
+   - Persistent storage
+   - Associative learning
+   - Experience recording
+   - Memory compression
 
-- ✅ Core Backend Implementation
-- ✅ ICRC-7 Compliance
-- ✅ Authentication System
-- ✅ Memory System
-- ✅ External API Integration
-- 🟡 Frontend Development (In Progress)
-- 🟡 Testing Suite (In Progress)
-- ❌ Production Deployment
+3. Trait System (Spoke)
+   - Dynamic evolution
+   - Rarity management
+   - Event-based traits
+   - Skill integration
 
-## 🗺 Roadmap
+4. Social System (Spoke)
+   - Inter-LNFT communication
+   - Collaborative features
+   - Guild management
+   - Skill sharing
 
-1. Complete Frontend Implementation
-2. Implement Testing Suite
-3. Production Deployment
-4. Community Features
-5. Enhanced AI Integration
+## Contributing
 
-## 🤝 Contributing
+Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
+- Code standards
+- Development workflow
+- Testing requirements
+- Documentation guidelines
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## Roadmap
 
-## 📄 License
+See [project_status.md](project_status.md) for detailed implementation status and upcoming features.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Security
 
-## 📚 Resources
+For security concerns, please contact [security contact].
 
-- [Internet Computer Documentation](https://internetcomputer.org/docs/)
-- [ICRC-7 Standard](https://internetcomputer.org/docs/current/developer-docs/integrations/icrc-7/)
-- [Motoko Documentation](https://internetcomputer.org/docs/current/developer-docs/build/languages/motoko/)
-- [DFX Documentation](https://internetcomputer.org/docs/current/references/cli-reference/dfx-parent/)
-
-## ⚠️ Note
-
-This project is under active development. Features and APIs may change.
+## License
+[License details]

@@ -1,79 +1,110 @@
-import { create } from 'zustand';
-import { AuthClient } from '@dfinity/auth-client';
-import { Identity } from '@dfinity/agent';
+import { Identity } from "@dfinity/agent";
+import { AuthClient } from "@dfinity/auth-client";
+import { create } from "zustand";
+import { actorFactory } from "../../utils/actor-factory";
+
+// Import the canister types
+import type { _SERVICE as LNFTCore } from "../../declarations/lnft_core/lnft_core.did";
+import { idlFactory } from "../../declarations/lnft_core/lnft_core.did.js";
 
 interface AuthState {
+  isInitialized: boolean;
   isAuthenticated: boolean;
   identity: Identity | null;
   principal: string | null;
-  isInitializing: boolean;
-  authClient: AuthClient | null;
+  actor: LNFTCore | null;
+  error: Error | null;
+  initialize: () => Promise<void>;
   login: () => Promise<void>;
   logout: () => Promise<void>;
-  initialize: () => Promise<void>;
 }
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set) => ({
+  isInitialized: false,
   isAuthenticated: false,
   identity: null,
   principal: null,
-  isInitializing: true,
-  authClient: null,
+  actor: null,
+  error: null,
 
   initialize: async () => {
     try {
       const authClient = await AuthClient.create();
       const isAuthenticated = await authClient.isAuthenticated();
       
-      set({
-        authClient,
-        isAuthenticated,
-        isInitializing: false,
-        identity: isAuthenticated ? authClient.getIdentity() : null,
-        principal: isAuthenticated ? authClient.getIdentity().getPrincipal().toString() : null,
-      });
+      if (isAuthenticated) {
+        const identity = authClient.getIdentity();
+        const actor = await actorFactory.createActor<LNFTCore>({
+          canisterId: process.env.VITE_LNFT_CORE_CANISTER_ID!,
+          idlFactory,
+          identity
+        });
+
+        set({
+          isAuthenticated: true,
+          identity,
+          principal: identity.getPrincipal().toString(),
+          actor,
+          error: null,
+        });
+      }
+
+      set({ isInitialized: true });
     } catch (error) {
-      console.error('Failed to initialize auth client:', error);
-      set({ isInitializing: false });
+      console.error('Auth initialization error:', error);
+      set({ error: error as Error });
     }
   },
 
   login: async () => {
-    const { authClient } = get();
-    if (!authClient) return;
-
     try {
-      const success = await authClient.login({
-        identityProvider: process.env.DFX_NETWORK === 'ic' 
-          ? 'https://identity.ic0.app'
-          : `http://localhost:4943/?canisterId=${process.env.INTERNET_IDENTITY_CANISTER_ID}`,
-        onSuccess: async () => {
-          const identity = authClient.getIdentity();
-          set({
-            isAuthenticated: true,
-            identity,
-            principal: identity.getPrincipal().toString(),
-          });
-        },
+      const authClient = await AuthClient.create();
+      
+      await new Promise<void>((resolve, reject) => {
+        authClient.login({
+          identityProvider: process.env.VITE_DFX_NETWORK === "ic" 
+            ? "https://identity.ic0.app" 
+            : process.env.VITE_INTERNET_IDENTITY_URL,
+          onSuccess: () => resolve(),
+          onError: reject,
+        });
       });
 
-      if (!success) {
-        console.error('Authentication failed');
-      }
+      const identity = authClient.getIdentity();
+      const actor = await actorFactory.createActor<LNFTCore>({
+        canisterId: process.env.VITE_LNFT_CORE_CANISTER_ID!,
+        idlFactory,
+        identity
+      });
+
+      set({
+        isAuthenticated: true,
+        identity,
+        principal: identity.getPrincipal().toString(),
+        actor,
+        error: null,
+      });
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Login error:', error);
+      set({ error: error as Error });
     }
   },
 
   logout: async () => {
-    const { authClient } = get();
-    if (!authClient) return;
+    try {
+      const authClient = await AuthClient.create();
+      await authClient.logout();
 
-    await authClient.logout();
-    set({
-      isAuthenticated: false,
-      identity: null,
-      principal: null,
-    });
+      set({
+        isAuthenticated: false,
+        identity: null,
+        principal: null,
+        actor: null,
+        error: null,
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      set({ error: error as Error });
+    }
   },
 }));

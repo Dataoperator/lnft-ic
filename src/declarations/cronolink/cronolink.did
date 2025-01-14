@@ -1,4 +1,0 @@
-type Cronolink = 
- service {
- };
-service : () -> Cronolink

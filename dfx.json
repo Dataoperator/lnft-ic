@@ -1,40 +1,58 @@
 {
   "canisters": {
-    "lnft_core": {
+    "hub": {
       "type": "motoko",
-      "main": "src/lnft_core/main.mo",
-      "optimize": "cycles",
-      "gzip": true
+      "main": "src/hub/main.mo",
+      "optimize": "cycles"
     },
     "auth": {
       "type": "motoko",
-      "main": "src/auth/main.mo",
-      "optimize": "cycles",
-      "gzip": true
+      "main": "src/spokes/auth/main.mo",
+      "optimize": "cycles"
     },
     "cronolink": {
       "type": "motoko",
-      "main": "src/cronolink/main.mo",
-      "optimize": "cycles",
-      "gzip": true
+      "main": "src/spokes/cronolink/main.mo",
+      "optimize": "cycles"
+    },
+    "memory": {
+      "type": "motoko",
+      "main": "src/spokes/memory/main.mo",
+      "optimize": "cycles"
+    },
+    "traits": {
+      "type": "motoko",
+      "main": "src/spokes/traits/main.mo",
+      "optimize": "cycles"
+    },
+    "skills": {
+      "type": "motoko",
+      "main": "src/spokes/skills/main.mo",
+      "optimize": "cycles"
     },
     "frontend": {
-      "type": "assets",
+      "dependencies": [
+        "hub",
+        "auth",
+        "cronolink",
+        "memory",
+        "traits",
+        "skills"
+      ],
+      "frontend": {
+        "entrypoint": "src/frontend/dist/index.html"
+      },
       "source": ["src/frontend/dist"],
-      "build": ["cd src/frontend && npm run build"],
-      "dependencies": ["lnft_core", "auth", "cronolink"],
-      "optimize": "cycles",
-      "gzip": true
+      "type": "assets",
+      "build": [
+        "cd src/frontend && npm install && npm run build"
+      ]
     }
   },
   "defaults": {
     "build": {
-      "args": "",
       "packtool": "vessel sources",
-      "optimizer": {
-        "level": "3",
-        "warm_up_iterations": 1000
-      }
+      "args": "--debug"
     }
   },
   "networks": {

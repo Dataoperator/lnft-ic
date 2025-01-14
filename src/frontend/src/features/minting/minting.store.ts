@@ -1,101 +1,119 @@
 import { create } from 'zustand';
-import { Actor, ActorSubclass } from '@dfinity/agent';
 import { useAuthStore } from '../auth/auth.store';
-import { LNFT, Trait } from '../../types';
-import { _SERVICE } from '../../declarations/lnft_core/lnft_core.did';
+import { Trait, TraitType, Rarity } from '../../types/canister';
+import { _SERVICE } from '../../../../declarations/lnft_core/lnft_core.did';
+import { createActor } from '../../../../declarations/lnft_core';
 
 interface MintingState {
   isLoading: boolean;
   error: string | null;
   currentPrice: bigint;
   traits: Trait[];
-  mint: (name: string, selectedTraits: string[]) => Promise<string>;
+  selectedTraits: string[];
+  name: string;
+  mint: (name: string, traits: string[]) => Promise<string>;
+  setName: (name: string) => void;
+  setSelectedTraits: (traits: string[]) => void;
   fetchCurrentPrice: () => Promise<void>;
   fetchAvailableTraits: () => Promise<void>;
+  reset: () => void;
 }
 
-export const useMintingStore = create<MintingState>((set, get) => ({
+const DEFAULT_STATE = {
   isLoading: false,
   error: null,
   currentPrice: BigInt(0),
   traits: [],
+  selectedTraits: [],
+  name: ''
+};
 
-  mint: async (name: string, selectedTraits: string[]) => {
+export const useMintingStore = create<MintingState>((set, get) => ({
+  ...DEFAULT_STATE,
+
+  setName: (name: string) => set({ name }),
+  
+  setSelectedTraits: (selectedTraits: string[]) => set({ selectedTraits }),
+
+  reset: () => set(DEFAULT_STATE),
+
+  mint: async (name: string, traitIds: string[]) => {
     set({ isLoading: true, error: null });
     try {
       const authStore = useAuthStore.getState();
-      if (!authStore.identity) throw new Error('Not authenticated');
+      if (!authStore.identity) throw new Error('Neural link not established');
 
-      const actor = Actor.createActor<_SERVICE>(
-        process.env.LNFT_CORE_CANISTER_ID as string,
-        {
-          agentOptions: {
-            identity: authStore.identity,
-            host: process.env.IC_HOST
-          }
+      const actor = createActor(process.env.VITE_LNFT_CORE_CANISTER_ID!, {
+        agentOptions: {
+          identity: authStore.identity,
+          host: process.env.VITE_IC_HOST
         }
-      );
+      });
 
       const result = await actor.mint({
         name,
-        traits: selectedTraits,
-        payment: { amount: get().currentPrice }
+        traitIds
       });
 
+      if ('Err' in result) {
+        throw new Error(result.Err);
+      }
+
       set({ isLoading: false });
-      return result.ok ? result.ok : Promise.reject(result.err);
+      return result.Ok;
     } catch (error) {
-      set({ error: error instanceof Error ? error.message : 'Failed to mint LNFT', isLoading: false });
-      throw error;
+      const errorMessage = error instanceof Error ? error.message : 'Entity generation failed';
+      set({
+        error: errorMessage,
+        isLoading: false
+      });
+      throw new Error(errorMessage);
     }
   },
 
   fetchCurrentPrice: async () => {
     try {
       const authStore = useAuthStore.getState();
-      if (!authStore.identity) throw new Error('Not authenticated');
+      if (!authStore.identity) throw new Error('Neural link not established');
 
-      const actor = Actor.createActor<_SERVICE>(
-        process.env.LNFT_CORE_CANISTER_ID as string,
-        {
-          agentOptions: {
-            identity: authStore.identity,
-            host: process.env.IC_HOST
-          }
+      const actor = createActor(process.env.VITE_LNFT_CORE_CANISTER_ID!, {
+        agentOptions: {
+          identity: authStore.identity,
+          host: process.env.VITE_IC_HOST
         }
-      );
+      });
 
-      const price = await actor.getCurrentMintingFee();
+      const price = await actor.getCurrentPrice();
       set({ currentPrice: price });
     } catch (error) {
-      set({ error: error instanceof Error ? error.message : 'Failed to fetch price' });
+      set({ 
+        error: error instanceof Error 
+          ? error.message 
+          : 'Failed to retrieve entity generation cost' 
+      });
     }
   },
 
   fetchAvailableTraits: async () => {
     try {
       const authStore = useAuthStore.getState();
-      if (!authStore.identity) throw new Error('Not authenticated');
+      if (!authStore.identity) throw new Error('Neural link not established');
 
-      const actor = Actor.createActor<_SERVICE>(
-        process.env.LNFT_CORE_CANISTER_ID as string,
-        {
-          agentOptions: {
-            identity: authStore.identity,
-            host: process.env.IC_HOST
-          }
+      const actor = createActor(process.env.VITE_LNFT_CORE_CANISTER_ID!, {
+        agentOptions: {
+          identity: authStore.identity,
+          host: process.env.VITE_IC_HOST
         }
-      );
+      });
 
       const traits = await actor.getAvailableTraits();
-      set({ traits: traits.map(t => ({
-        id: t.id,
-        name: t.name,
-        rarity: t.rarity,
-        type: t.type
-      })) });
+      set({ traits });
     } catch (error) {
-      set({ error: error instanceof Error ? error.message : 'Failed to fetch traits' });
+      set({ 
+        error: error instanceof Error 
+          ? error.message 
+          : 'Failed to retrieve available traits' 
+      });
     }
   }
 }));
