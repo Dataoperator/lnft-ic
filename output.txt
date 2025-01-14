@@ -1,0 +1,185 @@
+.
+├── MVP_IMPLEMENTATION.md
+├── MVP_IMPLEMENTATION_V2.md
+├── PROJECT_STATUS.md
+├── QA_CHECKLIST.md
+├── README.md
+├── backup
+│   ├── dfx.json
+│   └── src
+│       ├── backend
+│       │   ├── cronolink
+│       │   ├── ic.mo
+│       │   ├── lnft_core
+│       │   └── memory_system
+│       └── frontend
+│           ├── assets
+│           └── src
+├── backups
+│   └── 2024-01-13
+├── components.json
+├── dfx.json
+├── dfx.json.tmp
+├── index.html
+├── mops.toml
+├── orb@0.1.0
+├── output.txt
+├── package-lock.json
+├── package-set.dhall
+├── package.json
+├── postcss.config.cjs
+├── project_status.md
+├── scripts
+│   ├── backup.sh
+│   ├── build_beta.sh
+│   ├── build_mvp.sh
+│   ├── deploy.sh
+│   ├── find-port.js
+│   ├── generate-declarations.sh
+│   ├── html-minifier-config.json
+│   ├── smart-start.sh
+│   ├── update-dfx-port.sh
+│   ├── update-port.js
+│   └── verify-structure.sh
+├── src
+│   ├── components
+│   │   ├── AnimationProvider.tsx
+│   │   ├── EntityCard.tsx
+│   │   ├── ErrorBoundary.tsx
+│   │   └── NeuralLink.tsx
+│   ├── curriculum
+│   │   ├── Curriculum.mo
+│   │   └── Types.mo
+│   ├── features
+│   │   ├── auth
+│   │   │   ├── auth.store.ts
+│   │   │   └── components
+│   │   ├── cronolink
+│   │   │   ├── components
+│   │   │   ├── cronolink.store.ts
+│   │   │   └── index.ts
+│   │   ├── dashboard
+│   │   │   └── DashboardView.tsx
+│   │   └── minting
+│   │       └── minting.store.ts
+│   ├── fee_management
+│   │   ├── FeeManagement.mo
+│   │   ├── ICRCTypes.mo
+│   │   └── Types.mo
+│   ├── frontend
+│   │   ├── index.html
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── scripts
+│   │   │   └── fix-typescript.sh
+│   │   ├── src
+│   │   │   ├── App.tsx
+│   │   │   ├── components
+│   │   │   ├── declarations
+│   │   │   ├── features
+│   │   │   ├── hooks
+│   │   │   ├── lib
+│   │   │   ├── main.tsx
+│   │   │   ├── styles.css
+│   │   │   ├── types
+│   │   │   └── utils
+│   │   ├── src.bak
+│   │   │   ├── App.tsx
+│   │   │   ├── components
+│   │   │   ├── features
+│   │   │   ├── hooks
+│   │   │   ├── index.css
+│   │   │   ├── main.tsx
+│   │   │   ├── types
+│   │   │   └── utils
+│   │   ├── tailwind.config.cjs
+│   │   ├── tailwind.config.js
+│   │   ├── tsconfig.json
+│   │   ├── tsconfig.node.json
+│   │   ├── vessel
+│   │   └── vite.config.ts
+│   ├── hub
+│   │   ├── ICRC7.mo
+│   │   ├── StableStorage.mo
+│   │   ├── Types.mo
+│   │   ├── Types.mo.bak
+│   │   ├── main.mo
+│   │   ├── neural
+│   │   │   ├── emotional.mo
+│   │   │   ├── types.mo
+│   │   │   └── types.mo.bak
+│   │   ├── state.mo
+│   │   └── types.mo
+│   ├── integration
+│   │   ├── IntegrationSystem.mo
+│   │   └── Types.mo
+│   ├── lib
+│   │   └── neural_core.mo
+│   ├── minting
+│   │   ├── FeeSystem.mo
+│   │   └── Types.mo
+│   ├── minting_core
+│   │   ├── MintingSystem.mo
+│   │   └── Types.mo
+│   ├── shared
+│   │   ├── stable.mo
+│   │   ├── utils.mo
+│   │   └── validation.mo
+│   ├── spokes
+│   │   ├── auth
+│   │   │   ├── AuthSystem.mo
+│   │   │   ├── Types.mo
+│   │   │   ├── client
+│   │   │   ├── ic.mo
+│   │   │   ├── main.mo
+│   │   │   ├── storage.mo
+│   │   │   └── types.mo
+│   │   ├── cronolink
+│   │   │   ├── IC
+│   │   │   ├── IC.mo
+│   │   │   ├── main.mo
+│   │   │   └── types.mo
+│   │   ├── memory
+│   │   │   ├── EnhancedMemorySystem.mo
+│   │   │   ├── EnhancedTypes.mo
+│   │   │   ├── Types.mo
+│   │   │   ├── enhanced
+│   │   │   ├── main.mo
+│   │   │   ├── storage.mo
+│   │   │   └── types.mo
+│   │   ├── skills
+│   │   │   ├── SkillLibrary.mo
+│   │   │   ├── Types.mo
+│   │   │   ├── main.mo
+│   │   │   ├── storage.mo
+│   │   │   └── types.mo
+│   │   └── traits
+│   │       ├── RaritySystem.mo
+│   │       ├── Types.mo
+│   │       ├── main.mo
+│   │       └── types.mo
+│   └── types
+│       └── canister.ts
+├── tailwind.config.cjs
+├── temp_icrc7
+│   ├── LICENSE
+│   ├── README.md
+│   ├── commands
+│   │   └── deploy-local.sh
+│   ├── icrc7
+│   │   ├── CRC32.mo
+│   │   ├── SHA224.mo
+│   │   ├── main.mo
+│   │   ├── types.mo
+│   │   └── utils.mo
+│   ├── node
+│   │   └── index.js
+│   ├── package-lock.json
+│   └── package.json
+├── tsconfig.json
+├── vessel.dhall
+├── vite
+├── vite.config.ts
+└── webpack.config.js
+
+60 directories, 122 files

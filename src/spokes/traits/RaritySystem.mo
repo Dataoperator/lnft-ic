@@ -16,17 +16,21 @@ module {
             case (#Rare) 200;
             case (#Epic) 300;
             case (#Legendary) 500;
+            case (#Event) 400;
+            case (#Mythic) 1000;
         };
         baseValue * multiplier / 100
     };
 
     public func getRarityProbability(level : RarityLevel) : Nat {
         switch (level) {
-            case (#Common) 50;     // 50%
-            case (#Uncommon) 30;   // 30%
-            case (#Rare) 15;       // 15%
-            case (#Epic) 4;        // 4%
-            case (#Legendary) 1;    // 1%
+            case (#Common) 50;      // 50%
+            case (#Uncommon) 30;    // 30%
+            case (#Rare) 15;        // 15%
+            case (#Epic) 4;         // 4%
+            case (#Legendary) 0.9;  // 0.9%
+            case (#Event) 0.09;     // 0.09%
+            case (#Mythic) 0.01;    // 0.01%
         }
     };
 
@@ -38,6 +42,8 @@ module {
                 case (#Rare) 3;
                 case (#Epic) 4;
                 case (#Legendary) 5;
+                case (#Event) 6;
+                case (#Mythic) 7;
             }
         };
         getValue(a) >= getValue(b)

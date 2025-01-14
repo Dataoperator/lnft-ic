@@ -1,12 +1,14 @@
 [dependencies]
-base = "0.10.0"
-array = "master"
-hash = "master"
-encoding = "master"
-principal = "master"
+base = "0.10.1"
+uuid = "0.1.0"
+itertools = "0.1.1"
+stable-hash-map = "0.2.1"
+sha2 = "0.0.4"
+json = "0.2.0"
 
 [package]
-name = "orb"
+name = "lnft"
 version = "0.1.0"
-description = "Living NFT (LNFT) Project"
+description = "Living NFT System"
 repository = ""
+keywords = [ "nft", "ic", "neural" ]

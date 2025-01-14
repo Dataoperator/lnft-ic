@@ -5,6 +5,11 @@
       "main": "src/hub/main.mo",
       "optimize": "cycles"
     },
+    "neural": {
+      "type": "motoko",
+      "main": "src/hub/neural/main.mo",
+      "optimize": "cycles"
+    },
     "auth": {
       "type": "motoko",
       "main": "src/spokes/auth/main.mo",
@@ -33,6 +38,7 @@
     "frontend": {
       "dependencies": [
         "hub",
+        "neural",
         "auth",
         "cronolink",
         "memory",
